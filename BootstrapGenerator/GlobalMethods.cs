@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,6 +11,11 @@ namespace BootstrapGenerator
 {
     public static class GlobalMethods
     {
+        public static string GetProjectPathString()
+        {
+            return Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
+        }
+
         public static string ConvertCamelCase(string s)
         {
             var r = new Regex(@"
@@ -40,5 +46,6 @@ namespace BootstrapGenerator
             ele.AppendChild(txt);
             parent.AppendChild(ele);
         }
+
     }
 }
