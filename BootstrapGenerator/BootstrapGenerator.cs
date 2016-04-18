@@ -1,5 +1,6 @@
 ﻿using BootstrapGenerator.AngularGeneration;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace BootstrapGenerator
@@ -22,13 +23,15 @@ namespace BootstrapGenerator
             BootstrapGenerator generator = new BootstrapGenerator();
 
             FolderBrowserDialog fdb = new FolderBrowserDialog();
-            fdb.Description = "Chose an output path to save your generated html view to";
+            fdb.Description = "Chose an output path to save your generated file to...";
             if (fdb.ShowDialog() == DialogResult.OK)
             {
                 Dog dog = new Dog();
+                List<string> classAttributes = new List<string>(){ "table-striped", "table-hover", "table-bordered" };
 
-                AngularTable tableGenerator = new AngularTable(generator);
-                tableGenerator.GenerateView(dog, fdb.SelectedPath, true);
+                AngularTable angularTable = new AngularTable(generator, classAttributes);
+                angularTable.GenerateView(dog, fdb.SelectedPath, true);
+                //angularTable.GenerateController();  Funcitionality not yet implemented
             }
 
             Console.WriteLine("View generation successful, press any key to exit...");

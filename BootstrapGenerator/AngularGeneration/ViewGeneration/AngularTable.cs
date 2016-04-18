@@ -1,13 +1,23 @@
-﻿using System;
+﻿using BootstrapGenerator.AngularGeneration.ControllerGeneration;
+using System;
+using System.Collections.Generic;
 using System.Xml;
 
 namespace BootstrapGenerator.AngularGeneration
 {
     public class AngularTable : AAngularView
     {
+        protected List<string> tableClassAttributes { get; set; }
+
         public AngularTable(BootstrapGenerator generator) : base(generator)
         {
             ViewName = "Table";
+        }
+
+        public AngularTable(BootstrapGenerator generator, List<string> tableClassAttributes) : base(generator)
+        {
+            ViewName = "Table";
+            this.tableClassAttributes = tableClassAttributes;
         }
 
         protected override void GenerateHtml(XmlNode startNode)
@@ -15,15 +25,15 @@ namespace BootstrapGenerator.AngularGeneration
             GlobalMethods.CreateXmlElementSetText(doc, startNode, "h1", GenerationObjName + "s");
 
             XmlElement table = doc.CreateElement("table");
-            //if(classAttributes != null)
-            //{
-            //    string attrs = "table" + String.Join(" ", classAttributes);
-            //    table.SetAttribute("class", attrs);
-            //}
-            //else
-            //{
+            if (tableClassAttributes != null)
+            {
+                string attrs = "table " + String.Join(" ", tableClassAttributes);
+                table.SetAttribute("class", attrs);
+            }
+            else
+            {
                 table.SetAttribute("class", "table");
-            //}
+            }
             startNode.AppendChild(table);
 
             XmlElement thead = doc.CreateElement("thead");
@@ -59,6 +69,13 @@ namespace BootstrapGenerator.AngularGeneration
             SaveFile();
         }
 
-        public override void GenerateController() { }
+        public override void GenerateController(List<string> services, bool isHttp)
+        {
+            ControllerFactory controllerFactory = new ControllerFactory(this);
+            if (isHttp)
+                controllerFactory.createController(ControllerFactory.ControllerType.GetHttp);
+            else
+                controllerFactory.createController(ControllerFactory.ControllerType.NoHttp);
+        }
     }
 }

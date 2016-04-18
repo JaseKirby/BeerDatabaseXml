@@ -11,9 +11,9 @@ namespace BootstrapGenerator.AngularGeneration
         protected XmlDocument doc { get; set; }
         public Object GenerationObj { get; set; }
         public string GenerationObjName { get; set; }
+        public bool AddController { get; set; }
         public string OutputPath { get; set; }
-
-        protected Dictionary<XmlNode, List<string>> nodeClassAttrMap { get; set; }
+        public bool IsTemplateView { get; set; }
 
         protected AAngularView(BootstrapGenerator generator)
         {
@@ -29,11 +29,15 @@ namespace BootstrapGenerator.AngularGeneration
 
             if (useTemplate)
             {
+                IsTemplateView = true;
                 doc.Load(generator.TemplateFilePath);
                 CreateViewFromTemplate();
             }
             else
+            {
+                IsTemplateView = false;
                 CreateViewPartial();
+            }
         }
 
         void CreateViewPartial()
@@ -49,7 +53,7 @@ namespace BootstrapGenerator.AngularGeneration
         }
 
         protected abstract void GenerateHtml(XmlNode startNode);
-        public abstract void GenerateController();
+        public abstract void GenerateController(List<string> services = null, bool isHttp = false);
 
 
         protected void SaveFile()

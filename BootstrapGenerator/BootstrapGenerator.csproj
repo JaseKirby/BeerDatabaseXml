@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AngularGeneration\ControllerGeneration\AAngularController.cs" />
+    <Compile Include="AngularGeneration\ControllerGeneration\AngularController.cs" />
+    <Compile Include="AngularGeneration\ControllerGeneration\ControllerFactory.cs" />
     <Compile Include="AngularGeneration\ViewGeneration\AAngularView.cs" />
     <Compile Include="BootstrapGeneration\ABootstrapView.cs" />
     <Compile Include="BootstrapGenerator.cs" />
