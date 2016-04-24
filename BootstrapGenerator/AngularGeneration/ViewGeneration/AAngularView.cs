@@ -8,12 +8,14 @@ namespace BootstrapGenerator.AngularGeneration
     {
         public string ViewName { get; set; }
         protected BootstrapGenerator generator { get; set; }
-        protected XmlDocument doc { get; set; }
+        public XmlDocument Doc { get; set; }
+        public XmlNode StartNode { get; set; }
         public Object GenerationObj { get; set; }
         public string GenerationObjName { get; set; }
         public bool AddController { get; set; }
         public string OutputPath { get; set; }
         public bool IsTemplateView { get; set; }
+        public string ScopeObjectString { get; set; }
 
         protected AAngularView(BootstrapGenerator generator)
         {
@@ -25,12 +27,12 @@ namespace BootstrapGenerator.AngularGeneration
             this.GenerationObj = generationObj;
             this.GenerationObjName = generationObj.GetType().Name;
             this.OutputPath = outputPath;
-            doc = new XmlDocument();
+            Doc = new XmlDocument();
 
             if (useTemplate)
             {
                 IsTemplateView = true;
-                doc.Load(generator.TemplateFilePath);
+                Doc.Load(generator.TemplateFilePath);
                 CreateViewFromTemplate();
             }
             else
@@ -42,24 +44,30 @@ namespace BootstrapGenerator.AngularGeneration
 
         void CreateViewPartial()
         {
-            XmlNode div = doc.CreateElement("div");
-            doc.AppendChild(div);
-            GenerateHtml(div);
+            XmlNode div = Doc.CreateElement("div");
+            Doc.AppendChild(div);
+            StartNode = div;
+            GenerateHtml();
+            SaveView(true);
         }
         void CreateViewFromTemplate()
         {
-            XmlNode divContainer = doc.SelectSingleNode("//div[@id='start']");
-            GenerateHtml(divContainer);
+            XmlNode divContainer = Doc.SelectSingleNode("//div[@id='start']");
+            StartNode = divContainer;
+            GenerateHtml();
+            SaveView(true);
         }
 
-        protected abstract void GenerateHtml(XmlNode startNode);
+        protected abstract void GenerateHtml();
         public abstract void GenerateController(List<string> services = null, bool isHttp = false);
 
 
-        protected void SaveFile()
+        public void SaveView(bool printMessage)
         {
             string path = String.Format(@"{0}\{1}{2}.html", OutputPath, GenerationObjName, ViewName);
-            doc.Save(path);
+            Doc.Save(path);
+            if (printMessage)
+                Console.WriteLine("{0}{1} generated at: {2}", GenerationObjName, ViewName, path);
         }
     }
 }

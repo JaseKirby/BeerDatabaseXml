@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
 
 namespace BootstrapGenerator.AngularGeneration
 {
@@ -22,20 +20,30 @@ namespace BootstrapGenerator.AngularGeneration
             if (services != null)
                 this.services = services;
             else
-                services = new List<string>() { "$scope" };
+                this.services = new List<string>() { "$scope" };
             controllerLines = new List<string>();
             controllerName = String.Format("{0}{1}Ctrl", view.GenerationObjName, view.ViewName);
-            controllerName = String.Format("{0}Ctrl.js", controllerName);
+            controllerFileName = String.Format("{0}.js", controllerName);
             Generate();
         }
 
-        protected abstract void Generate();
+        protected void Generate()
+        {
+            CreateFirstLines();
+            CreateBody();
+            CreateEndLine();
+            AddControllerReferenceToView();
+            SaveFile();
 
-        protected void CreateFirstLine()
+        }
+
+        protected void CreateFirstLines()
         {
             string servicesStr = String.Join(", ", services);
-            string startLine = String.Format("app.controller('{0}', function({1}){", controllerName, servicesStr);
+            string startLine = String.Format("app.controller('{0}', function({1})", controllerName, servicesStr);
+            startLine += "{";
             controllerLines.Add(startLine);
+            controllerLines.Add("\t" + view.ScopeObjectString);
         }
 
         protected abstract void CreateBody();
@@ -45,15 +53,29 @@ namespace BootstrapGenerator.AngularGeneration
             controllerLines.Add("});");
         }
 
-        protected void SaveFile()
+        protected void AddControllerReferenceToView()
         {
-            string path = String.Format(@"{0}\{1}", view.OutputPath, controllerName);
-            File.WriteAllLines(path, controllerLines);
+            XmlElement scriptTag = view.Doc.CreateElement("script");
+            scriptTag.InnerText = " ";
+            scriptTag.SetAttribute("src", controllerFileName);
+            ((XmlElement)view.StartNode).SetAttribute("ng-controller", controllerName);
+            if (view.IsTemplateView)
+            {
+                XmlNode body = view.Doc.SelectSingleNode("//body");
+                body.AppendChild(scriptTag);
+            }else
+            {
+                view.StartNode.AppendChild(scriptTag);
+            }
+            view.SaveView(false);
         }
 
-        protected void AddScriptTagToHtml()
+        protected void SaveFile()
         {
-
+            string path = String.Format(@"{0}\{1}", view.OutputPath, controllerFileName);
+            File.WriteAllLines(path, controllerLines);
+            Console.WriteLine("Angular controller for {1}{2} view generated at: {3}", controllerName, 
+                view.GenerationObjName, view.ViewName, path);
         }
     }
 }

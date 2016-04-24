@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace BootstrapGenerator.AngularGeneration
+namespace BootstrapGenerator.AngularGeneration.ViewGeneration
 {
     public class AngularTable : AAngularView
     {
@@ -20,11 +20,13 @@ namespace BootstrapGenerator.AngularGeneration
             this.tableClassAttributes = tableClassAttributes;
         }
 
-        protected override void GenerateHtml(XmlNode startNode)
+        protected override void GenerateHtml()
         {
-            GlobalMethods.CreateXmlElementSetText(doc, startNode, "h1", GenerationObjName + "s");
+            ScopeObjectString = String.Format("$scope.{0} = [];", GenerationObjName);
 
-            XmlElement table = doc.CreateElement("table");
+            Functions.CreateXmlElementSetText(Doc, StartNode, "h1", GenerationObjName + "s");
+
+            XmlElement table = Doc.CreateElement("table");
             if (tableClassAttributes != null)
             {
                 string attrs = "table " + String.Join(" ", tableClassAttributes);
@@ -34,12 +36,13 @@ namespace BootstrapGenerator.AngularGeneration
             {
                 table.SetAttribute("class", "table");
             }
-            startNode.AppendChild(table);
 
-            XmlElement thead = doc.CreateElement("thead");
+            StartNode.AppendChild(table);
+
+            XmlElement thead = Doc.CreateElement("thead");
             table.AppendChild(thead);
 
-            XmlElement tr = doc.CreateElement("tr");
+            XmlElement tr = Doc.CreateElement("tr");
             thead.AppendChild(tr);
 
             var props = GenerationObj.GetType().GetProperties();
@@ -47,29 +50,27 @@ namespace BootstrapGenerator.AngularGeneration
             {
                 if(generator.configuration.IsPropertyTypeSupported(prop.PropertyType))
                 {
-                    string colName = GlobalMethods.ConvertCamelCase(prop.Name);
-                    GlobalMethods.CreateXmlElementSetText(doc, tr, "th", colName);
+                    string colName = Functions.ConvertCamelCase(prop.Name);
+                    Functions.CreateXmlElementSetText(Doc, tr, "th", colName);
                 }
             }
 
-            XmlElement tbody = doc.CreateElement("tbody");
+            XmlElement tbody = Doc.CreateElement("tbody");
             table.AppendChild(tbody);
 
-            XmlElement trBody = doc.CreateElement("tr");
+            XmlElement trBody = Doc.CreateElement("tr");
             string value = String.Format("{0} in {1}s", GenerationObjName, GenerationObjName);
             trBody.SetAttribute("ng-repeat", value);
             tbody.AppendChild(trBody);
 
             foreach(var prop in props)
             {
-                string angText = GlobalMethods.CreateAngularPropView(GenerationObjName, prop.Name);
-                GlobalMethods.CreateXmlElementSetText(doc, trBody, "td", angText);
+                string angText = Functions.CreateAngularExpression(GenerationObjName, prop.Name);
+                Functions.CreateXmlElementSetText(Doc, trBody, "td", angText);
             }
-
-            SaveFile();
         }
 
-        public override void GenerateController(List<string> services, bool isHttp)
+        public override void GenerateController(List<string> services = null, bool isHttp = false)
         {
             ControllerFactory controllerFactory = new ControllerFactory(this);
             if (isHttp)

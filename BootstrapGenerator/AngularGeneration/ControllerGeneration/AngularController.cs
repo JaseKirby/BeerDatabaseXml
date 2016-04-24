@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BootstrapGenerator.AngularGeneration.ControllerGeneration
 {
@@ -14,12 +10,8 @@ namespace BootstrapGenerator.AngularGeneration.ControllerGeneration
 
         protected override void CreateBody()
         {
-            throw new NotImplementedException();
+            
         }
 
-        protected override void Generate()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

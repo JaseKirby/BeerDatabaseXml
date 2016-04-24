@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace BootstrapGenerator
 {
-    public static class GlobalMethods
+    public static class Functions
     {
         public static string GetProjectPathString()
         {
@@ -26,12 +22,17 @@ namespace BootstrapGenerator
             return s;
         }
 
-        public static string CreateAngularPropView(string objName, string propName)
+        public static string CreateAngularExpression(string objName, string propName)
         {
             string dboBr = "{{";
             string dbcBr = "}}";
             string s = String.Format("{0}{1}.{2}{3}", dboBr, objName, propName, dbcBr);
             return s;
+        }
+
+        public static string CreateAngularPropView(string objName, string propName)
+        {
+            return String.Format("{0}.{1}", objName, propName);
         }
 
         public static void CreateXmlElement(XmlDocument doc, XmlNode parent, string name)

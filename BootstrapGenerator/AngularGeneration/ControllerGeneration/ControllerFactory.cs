@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BootstrapGenerator.AngularGeneration.ControllerGeneration
+﻿namespace BootstrapGenerator.AngularGeneration.ControllerGeneration
 {
     public class ControllerFactory
     {

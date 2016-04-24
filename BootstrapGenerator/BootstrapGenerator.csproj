@@ -48,11 +48,14 @@
     <Compile Include="AngularGeneration\ControllerGeneration\AngularController.cs" />
     <Compile Include="AngularGeneration\ControllerGeneration\ControllerFactory.cs" />
     <Compile Include="AngularGeneration\ViewGeneration\AAngularView.cs" />
+    <Compile Include="AngularGeneration\ViewGeneration\AngularDetails.cs" />
+    <Compile Include="AngularGeneration\ViewGeneration\AngularForm.cs" />
+    <Compile Include="AngularGeneration\ViewGeneration\AngularFormSmall.cs" />
     <Compile Include="BootstrapGeneration\ABootstrapView.cs" />
     <Compile Include="BootstrapGenerator.cs" />
     <Compile Include="GeneratorConfiguration.cs" />
-    <Compile Include="GlobalMethods.cs" />
-    <Compile Include="ClassBucket\Dog.cs" />
+    <Compile Include="Functions.cs" />
+    <Compile Include="ClassBucket\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AngularGeneration\ViewGeneration\AngularTable.cs" />
   </ItemGroup>
@@ -60,7 +63,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Templates\BootstrapTemplate.xml" />
+    <Content Include="Templates\AngularBootstrap.xml" />
+    <Content Include="Templates\Angular.xml" />
+    <Content Include="Templates\Bootstrap.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

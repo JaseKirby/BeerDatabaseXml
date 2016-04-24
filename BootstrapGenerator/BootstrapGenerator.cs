@@ -1,4 +1,4 @@
-﻿using BootstrapGenerator.AngularGeneration;
+﻿using BootstrapGenerator.AngularGeneration.ViewGeneration;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -8,13 +8,13 @@ namespace BootstrapGenerator
     public class BootstrapGenerator
     {
         public GeneratorConfiguration configuration { get; set; }
-        public readonly string TemplateFileName = "BootstrapTemplate.xml";
+        public readonly string TemplateFileName = "AngularBootstrap.xml";
         public string TemplateFilePath { get; set; }
 
         public BootstrapGenerator()
         {
             configuration = new GeneratorConfiguration(this);
-            TemplateFilePath = String.Format(@"{0}\Templates\{1}", GlobalMethods.GetProjectPathString(), TemplateFileName);
+            TemplateFilePath = String.Format(@"{0}\Templates\{1}", Functions.GetProjectPathString(), TemplateFileName);
         }
 
         [STAThread]
@@ -26,15 +26,24 @@ namespace BootstrapGenerator
             fdb.Description = "Chose an output path to save your generated file to...";
             if (fdb.ShowDialog() == DialogResult.OK)
             {
-                Dog dog = new Dog();
+                Person person = new Person();
                 List<string> classAttributes = new List<string>(){ "table-striped", "table-hover", "table-bordered" };
 
-                AngularTable angularTable = new AngularTable(generator, classAttributes);
-                angularTable.GenerateView(dog, fdb.SelectedPath, true);
-                //angularTable.GenerateController();  Funcitionality not yet implemented
+                //AngularTable angularTable = new AngularTable(generator, classAttributes);
+                //angularTable.GenerateView(person, fdb.SelectedPath, true);
+                //angularTable.GenerateController();
+
+                //AngularForm angularForm = new AngularForm(generator);
+                //angularForm.GenerateView(person, fdb.SelectedPath, true);
+
+                //AngularFormSmall angFormSmall = new AngularFormSmall(generator);
+                //angFormSmall.GenerateView(person, fdb.SelectedPath, true);
+
+                AngularDetails angDetails = new AngularDetails(generator);
+                angDetails.GenerateView(person, fdb.SelectedPath, true);
             }
 
-            Console.WriteLine("View generation successful, press any key to exit...");
+            Console.WriteLine("\nView generation operations successful, press any key to exit...");
             Console.ReadLine();
         }
     }

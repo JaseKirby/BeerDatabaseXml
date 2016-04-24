@@ -1,0 +1,14 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Angular Template</title>
+    <meta charset="utf-8"></meta>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"> </script>
+  </head>
+  <body>
+    <div id="start" class="container">
+      
+    </div>
+    <script>var app = angular.module("MyApp", []);</script>
+  </body>
+</html>
