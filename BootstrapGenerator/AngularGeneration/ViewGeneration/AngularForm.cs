@@ -29,7 +29,7 @@ namespace BootstrapGenerator.AngularGeneration.ViewGeneration
             var props = GenerationObj.GetType().GetProperties();
             foreach(var prop in props)
             {
-                if (generator.configuration.IsPropertyTypeSupported(prop.PropertyType))
+                if (Generator.configuration.IsPropertyTypeSupported(prop.PropertyType))
                 {
                     XmlElement formGroup = Doc.CreateElement("div");
                     formGroup.SetAttribute("class", "form-group");

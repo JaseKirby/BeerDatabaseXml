@@ -10,7 +10,6 @@ namespace BootstrapGenerator.AngularGeneration.ControllerGeneration
 
         protected override void CreateBody()
         {
-            
         }
 
     }

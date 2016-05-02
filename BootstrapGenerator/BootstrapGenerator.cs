@@ -8,6 +8,7 @@ namespace BootstrapGenerator
     public class BootstrapGenerator
     {
         public GeneratorConfiguration configuration { get; set; }
+        public string OutputPath { get; set; }
         public readonly string TemplateFileName = "AngularBootstrap.xml";
         public string TemplateFilePath { get; set; }
 
@@ -23,15 +24,16 @@ namespace BootstrapGenerator
             BootstrapGenerator generator = new BootstrapGenerator();
 
             FolderBrowserDialog fdb = new FolderBrowserDialog();
-            fdb.Description = "Chose an output path to save your generated file to...";
+            fdb.Description = "Choose an output path to save your generated file to...";
             if (fdb.ShowDialog() == DialogResult.OK)
             {
+                generator.OutputPath = fdb.SelectedPath;
                 Person person = new Person();
                 List<string> classAttributes = new List<string>(){ "table-striped", "table-hover", "table-bordered" };
 
-                //AngularTable angularTable = new AngularTable(generator, classAttributes);
-                //angularTable.GenerateView(person, fdb.SelectedPath, true);
-                //angularTable.GenerateController();
+                AngularTable angularTable = new AngularTable(generator, classAttributes);
+                angularTable.GenerateView(person, true);
+                angularTable.GenerateController();
 
                 //AngularForm angularForm = new AngularForm(generator);
                 //angularForm.GenerateView(person, fdb.SelectedPath, true);
@@ -39,11 +41,11 @@ namespace BootstrapGenerator
                 //AngularFormSmall angFormSmall = new AngularFormSmall(generator);
                 //angFormSmall.GenerateView(person, fdb.SelectedPath, true);
 
-                AngularDetails angDetails = new AngularDetails(generator);
-                angDetails.GenerateView(person, fdb.SelectedPath, true);
+                //AngularDetails angDetails = new AngularDetails(generator);
+                //angDetails.GenerateView(person, fdb.SelectedPath, true);
             }
 
-            Console.WriteLine("\nView generation operations successful, press any key to exit...");
+            Console.WriteLine("\nView generation operations successful, press enter key to exit...");
             Console.ReadLine();
         }
     }

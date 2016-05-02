@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
-namespace BootstrapGenerator.AngularGeneration
+namespace BootstrapGenerator.AngularGeneration.ControllerGeneration
 {
     public abstract class AAngularController
     {
@@ -12,18 +12,18 @@ namespace BootstrapGenerator.AngularGeneration
         protected string controllerFileName { get; set; }
         protected List<string> controllerLines { get; set; }
         protected List<string> services { get; set; }
-        protected string jsObjectString { get; set; }
+        protected string scopeObjString { get;}
 
         protected AAngularController(AAngularView view, List<string> services = null)
         {
             this.view = view;
+            this.services = new List<string>() { "$scope" };
             if (services != null)
-                this.services = services;
-            else
-                this.services = new List<string>() { "$scope" };
+                this.services.AddRange(services);
             controllerLines = new List<string>();
             controllerName = String.Format("{0}{1}Ctrl", view.GenerationObjName, view.ViewName);
             controllerFileName = String.Format("{0}.js", controllerName);
+            scopeObjString = Functions.StripScopeObjString(view.ScopeObjectString);
             Generate();
         }
 
@@ -72,10 +72,19 @@ namespace BootstrapGenerator.AngularGeneration
 
         protected void SaveFile()
         {
-            string path = String.Format(@"{0}\{1}", view.OutputPath, controllerFileName);
+            string path = String.Format(@"{0}\{1}", view.Generator.OutputPath, controllerFileName);
             File.WriteAllLines(path, controllerLines);
             Console.WriteLine("Angular controller for {1}{2} view generated at: {3}", controllerName, 
                 view.GenerationObjName, view.ViewName, path);
+        }
+
+        public string GetClosingTagNoColon()
+        {
+            return ")}";
+        }
+        public string GetClosingTagColon()
+        {
+            return ")};";
         }
     }
 }

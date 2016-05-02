@@ -29,7 +29,7 @@ namespace BootstrapGenerator.AngularGeneration.ViewGeneration
             var props = GenerationObj.GetType().GetProperties();
             foreach (var prop in props)
             {
-                if (generator.configuration.IsPropertyTypeSupported(prop.PropertyType))
+                if (Generator.configuration.IsPropertyTypeSupported(prop.PropertyType))
                 {
                     XmlElement dataTitle = Doc.CreateElement("dt");
                     string dtStr = Functions.ConvertCamelCase(prop.Name);

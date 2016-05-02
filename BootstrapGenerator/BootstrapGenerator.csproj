@@ -46,12 +46,15 @@
   <ItemGroup>
     <Compile Include="AngularGeneration\ControllerGeneration\AAngularController.cs" />
     <Compile Include="AngularGeneration\ControllerGeneration\AngularController.cs" />
+    <Compile Include="AngularGeneration\ControllerGeneration\AAngularHttpController.cs" />
     <Compile Include="AngularGeneration\ControllerGeneration\ControllerFactory.cs" />
+    <Compile Include="AngularGeneration\ControllerGeneration\HttpGetController.cs" />
     <Compile Include="AngularGeneration\ViewGeneration\AAngularView.cs" />
     <Compile Include="AngularGeneration\ViewGeneration\AngularDetails.cs" />
     <Compile Include="AngularGeneration\ViewGeneration\AngularForm.cs" />
     <Compile Include="AngularGeneration\ViewGeneration\AngularFormSmall.cs" />
-    <Compile Include="BootstrapGeneration\ABootstrapView.cs" />
+    <Compile Include="AView.cs" />
+    <Compile Include="BootstrapGeneration\Table.cs" />
     <Compile Include="BootstrapGenerator.cs" />
     <Compile Include="GeneratorConfiguration.cs" />
     <Compile Include="Functions.cs" />

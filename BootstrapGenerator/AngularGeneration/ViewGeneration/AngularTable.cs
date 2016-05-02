@@ -7,17 +7,13 @@ namespace BootstrapGenerator.AngularGeneration.ViewGeneration
 {
     public class AngularTable : AAngularView
     {
-        protected List<string> tableClassAttributes { get; set; }
+        protected List<string> tableClassAttributes = new List<string>() { "table" };
 
-        public AngularTable(BootstrapGenerator generator) : base(generator)
+        public AngularTable(BootstrapGenerator generator, List<string> tableClassAttributes = null) : base(generator)
         {
             ViewName = "Table";
-        }
-
-        public AngularTable(BootstrapGenerator generator, List<string> tableClassAttributes) : base(generator)
-        {
-            ViewName = "Table";
-            this.tableClassAttributes = tableClassAttributes;
+            if (tableClassAttributes != null)
+                this.tableClassAttributes.AddRange(tableClassAttributes);
         }
 
         protected override void GenerateHtml()
@@ -27,15 +23,8 @@ namespace BootstrapGenerator.AngularGeneration.ViewGeneration
             Functions.CreateXmlElementSetText(Doc, StartNode, "h1", GenerationObjName + "s");
 
             XmlElement table = Doc.CreateElement("table");
-            if (tableClassAttributes != null)
-            {
-                string attrs = "table " + String.Join(" ", tableClassAttributes);
-                table.SetAttribute("class", attrs);
-            }
-            else
-            {
-                table.SetAttribute("class", "table");
-            }
+            string attrs = Functions.JoinStringList(tableClassAttributes);
+            table.SetAttribute("class", attrs);
 
             StartNode.AppendChild(table);
 
@@ -48,7 +37,7 @@ namespace BootstrapGenerator.AngularGeneration.ViewGeneration
             var props = GenerationObj.GetType().GetProperties();
             foreach(var prop in props)
             {
-                if(generator.configuration.IsPropertyTypeSupported(prop.PropertyType))
+                if(Generator.configuration.IsPropertyTypeSupported(prop.PropertyType))
                 {
                     string colName = Functions.ConvertCamelCase(prop.Name);
                     Functions.CreateXmlElementSetText(Doc, tr, "th", colName);

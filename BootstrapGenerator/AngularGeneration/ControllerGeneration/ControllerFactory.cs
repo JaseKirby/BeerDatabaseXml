@@ -1,4 +1,6 @@
-﻿namespace BootstrapGenerator.AngularGeneration.ControllerGeneration
+﻿using System.Collections.Generic;
+
+namespace BootstrapGenerator.AngularGeneration.ControllerGeneration
 {
     public class ControllerFactory
     {
@@ -17,6 +19,8 @@
             switch (controllerType)
             {
                 case ControllerType.NoHttp:
+                    return new AngularController(angularView);
+                case ControllerType.GetHttp:
                     return new AngularController(angularView);
                 default:
                     return new AngularController(angularView);
